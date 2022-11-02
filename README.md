@@ -2,20 +2,36 @@
 ***
 ## How to set up
 1. Download Software
-  - IDEA
-  - JDK 11
-  - MySQL-5.7.28 (You can use docker to install)
-  - Redis (You can use docker to install)
-  - Nacos (You can use docker to install) https://nacos.io/en-us/docs/v2/quickstart/quick-start-docker.html
-  - (Optional) Database management software like 'Navicat'
-3. Start MySQL
+   - IDEA
+   - JDK 11
+   - MySQL-5.7.28 (You can use docker to install)
+   - Redis (You can use docker to install)
+   - Nacos (You can use docker to install) https://nacos.io/en-us/docs/v2/quickstart/quick-start-docker.html
+   - (Optional) Database management software like 'Navicat'
+2. Start MySQL
    - find SQL script in /SQLschema
    - execute the script in your mysql
-4. Start Redis
-5. Start Nacos
+3. Start Redis
+
+4. Start Nacos
    - start in "standalone" mode
    - https://nacos.io/en-us/docs/v2/quickstart/quick-start.html
-6. Use IDEA to open this project
+   
+   For **macOS with Apple Chip**, after cloning the `nacos-docker` repo,
+   edit the `.env` file in `example` folder.
+   ```shell
+   cd example
+   vim .env
+   ```
+   Change the original `NACOS_VERSION=v2.1.1` to `NACOS_VERSION=v2.1.1-slim`, 
+   which `v2.1.1-slim` is the version for **Apple Chip**.
+
+   Then continue follow the [Quick Start for Nacos](https://nacos.io/en-us/docs/v2/quickstart/quick-start.html)
+   ```shell
+   docker-compose -f example/standalone-derby.yaml up
+   ```
+
+5. Use IDEA to open this project
    - Look into every Maven(*.pom) file, ensure all dependency is included.
    - Look at application.yml under every module, ensure the datasource config (username, password) is correct.
    - start service under every module
