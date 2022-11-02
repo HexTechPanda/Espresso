@@ -34,7 +34,7 @@ but you also can call the target service directly with endpoint like
 localhost:8011
 ## Auth service
 Login API
-   - POST localhost:6001/auth/public/user/login
+   - POST localhost:8080/auth/public/user/login
    - Request body:
 ```json
 {
@@ -53,7 +53,7 @@ Login API
 }
 ```
 Register API
-- POST localhost:6001/auth/public/user/register
+- POST localhost:8080/auth/public/user/register
 - Request body:
 ```json
 {
@@ -65,9 +65,24 @@ Register API
     "email": "tester02@test.com"
 }
 ```
+- Response body:
+```
+{
+    "code": 20000,
+    "message": "Success",
+    "data": null
+}
+```
 Logout API
-- POST localhost:6001/auth/user/logout
-
+- POST localhost:8080/auth/user/logout (carry bearer token in http header)
+- Request body:
+```
+{
+    "code": 20000,
+    "message": "Success",
+    "data": null
+}
+```
 ###OAuth2 Login - only support Web client
 
 To Front-End developer:
