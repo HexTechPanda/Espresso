@@ -8,26 +8,36 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginUser implements UserDetails {
-    private SysUser sysUser;
+public class LoginUser implements OAuth2User, UserDetails {
+    private static final long serialVersionUID = 4840482468139779302L;
 
+    private SysUser sysUser;
     List<String> permissions;
+    private Map<String, Object> attributes;
+    @JSONField(serialize = false)
+    List<SimpleGrantedAuthority> authorities;
+
 
     public LoginUser(SysUser user, List<String> permissions) {
         this.sysUser = user;
         this.permissions = permissions;
     }
 
-    @JSONField(serialize = false)
-    List<SimpleGrantedAuthority> authorities;
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,5 +77,10 @@ public class LoginUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return sysUser.getIsEnabled() == 1;
+    }
+
+    @Override
+    public String getName() {
+        return sysUser.getNickName();
     }
 }

@@ -3,9 +3,11 @@ package com.espresso.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.espresso.commons.result.Result;
+import com.espresso.domain.OAuth2RegisterRequest;
 import com.espresso.domain.RegisterRequest;
 import com.espresso.dto.SysUser;
 import com.espresso.mapper.SysUserMapper;
+import com.espresso.security.oauth2.OAuth2AuthenticationProcessingException;
 import com.espresso.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +76,56 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         }
 
         return Result.ok();
+    }
+
+    @Override
+    public SysUser oauth2Register(OAuth2RegisterRequest req) throws OAuth2AuthenticationProcessingException{
+        if(StringUtils.isEmpty( req.getEmail())){
+            throw new OAuth2AuthenticationProcessingException("Email can not be empty.");
+        }
+        // Use email as username
+        Result result = checkUsername(req.getEmail());
+        if( (Boolean) result.getData() ) {
+            throw new OAuth2AuthenticationProcessingException("Email has already been registered.");
+        }
+
+        SysUser sysUser = new SysUser();
+        // Email as username
+        sysUser.setUsername( req.getEmail() );
+        sysUser.setIsAccountNonLocked(1);
+        sysUser.setIsAccountNonLocked(1);
+        sysUser.setIsCredentialsNonExpired(1);
+        sysUser.setIsEnabled(1);
+        sysUser.setNickName( req.getNickName() );
+        sysUser.setEmail( req.getEmail() );
+        sysUser.setCreateDate( new Date() );
+        sysUser.setUpdateDate( new Date() );
+        sysUser.setPwdUpdateDate( new Date() );
+        sysUser.setProvider(req.getProvider());
+        sysUser.setProviderId(req.getProviderId());
+
+        try {
+            this.save(sysUser);
+        } catch (DuplicateKeyException ex){
+            throw new OAuth2AuthenticationProcessingException("Mobile or email has registered.");
+        }
+
+        return sysUser;
+    }
+
+    @Override
+    public SysUser findByEmail(String email){
+        if(StringUtils.isEmpty(email)){
+            return null;
+        }
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
+        wrapper.eq("email", email);
+        return baseMapper.selectOne(wrapper);
+    }
+
+    public SysUser updateUser(SysUser sysUser){
+        sysUser.setUpdateDate(new Date());
+        baseMapper.updateById(sysUser);
+        return sysUser;
     }
 }

@@ -32,4 +32,6 @@ public class SysUser implements Serializable {
     private Date createDate;
     private Date updateDate;
     private Date pwdUpdateDate;
+    private String provider;
+    private String providerId;
 }
