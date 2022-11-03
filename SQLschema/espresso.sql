@@ -11,7 +11,7 @@
  Target Server Version : 50728 (5.7.28-log)
  File Encoding         : 65001
 
- Date: 31/10/2022 10:45:56
+ Date: 03/11/2022 11:41:01
 */
 
 SET NAMES utf8mb4;
@@ -35,6 +35,8 @@ CREATE TABLE `espresso_user`  (
   `create_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create_date',
   `update_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'update_date',
   `pwd_update_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'pwd_update_date',
+  `provider` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `provider_id` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE,
   UNIQUE INDEX `mobile`(`mobile`) USING BTREE,
@@ -44,6 +46,7 @@ CREATE TABLE `espresso_user`  (
 -- ----------------------------
 -- Records of espresso_user
 -- ----------------------------
-INSERT INTO `espresso_user` VALUES ('1586700126404571137', 'tester01', '$2a$10$.f84CGrI1os678dKAApjWeKx1RAygMaOIjDvXkWQon.aKzjdDGEAK', 1, 1, 1, 1, 'tester01nick', '88883333', 'tester01@test.com', '2022-10-30 20:42:44', '2022-10-30 20:42:44', '2022-10-30 20:42:44');
+INSERT INTO `espresso_user` VALUES ('1586700126404571137', 'tester01', '$2a$10$.f84CGrI1os678dKAApjWeKx1RAygMaOIjDvXkWQon.aKzjdDGEAK', 1, 1, 1, 1, 'tester01nick', '88883333', 'tester01@test.com', '2022-10-30 20:42:44', '2022-10-30 20:42:44', '2022-10-30 20:42:44', NULL, NULL);
+INSERT INTO `espresso_user` VALUES ('1587692110615150593', 'tester03', '$2a$10$ngkGjnp6MGdmHF8zehunEOyTROM0xwMpbg91pPuPCnLdO8NEC76ae', 1, 1, 1, 1, 'tester01nick', '88883363', 'tester03@test.com', '2022-11-02 14:24:32', '2022-11-02 14:24:32', '2022-11-02 14:24:32', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
