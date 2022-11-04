@@ -26,3 +26,6 @@ spring:
     properties:
       hibernate:
         dialect: com.espresso.config.mysql.MySQL5Utf8Dialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
