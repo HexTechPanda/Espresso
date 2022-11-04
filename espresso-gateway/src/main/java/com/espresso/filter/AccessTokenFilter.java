@@ -28,7 +28,7 @@ import java.util.Objects;
 public class AccessTokenFilter implements GlobalFilter, Ordered {
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String[] white = { "/public/" };
+    private static final String[] white = { "/public/", "/v2/api-docs" };
 
     @Autowired
     RedisCache redisCache;
