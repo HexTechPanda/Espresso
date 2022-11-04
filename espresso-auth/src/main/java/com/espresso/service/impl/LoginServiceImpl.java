@@ -1,6 +1,7 @@
 package com.espresso.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.espresso.commons.model.UserProfile;
 import com.espresso.commons.result.Result;
 import com.espresso.commons.result.ResultEnum;
@@ -50,8 +51,10 @@ public class LoginServiceImpl implements LoginService {
             LoginUser loginUser= (LoginUser) (authenticate.getPrincipal());
             SysUser sysUser = loginUser.getSysUser();
             String userId = sysUser.getId();
-            String jwt = JwtUtil.createJWT(userId);
-            Map<String, String> map = new HashMap();
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("authorities", JSON.toJSON(loginUser.getPermissions()));
+            String jwt = JwtUtil.createJWT(userId, claims);
+            Map<String, String> map = new HashMap<>();
             map.put("token",jwt);
             // 5 Put all information related to system users into Redis
             UserProfile userProfile = new UserProfile();

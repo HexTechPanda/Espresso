@@ -1,5 +1,6 @@
 package com.espresso.security.oauth2;
 
+import com.alibaba.fastjson.JSON;
 import com.espresso.commons.model.UserProfile;
 import com.espresso.commons.utils.JwtUtil;
 import com.espresso.commons.utils.RedisCache;
@@ -68,7 +69,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         LoginUser loginUser= (LoginUser) (authentication.getPrincipal());
         SysUser sysUser = loginUser.getSysUser();
         String userId = sysUser.getId();
-        String jwt = JwtUtil.createJWT(userId);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", JSON.toJSON(loginUser.getPermissions()));
+        String jwt = JwtUtil.createJWT(userId, claims);
         Map<String, String> map = new HashMap();
         map.put("token",jwt);
         // 5 Put all information related to system users into Redis

@@ -25,7 +25,7 @@ public class DemoController {
         return "Hello World!";
     }
 
-    @PreAuthorize("hasAuthority('thirdparty')")
+    @PreAuthorize("hasRole('ROLE_thirdparty')")
     @GetMapping("/thirdparty/hello")
     public String thirdPartyHello(){
         return "Thirdparty Hello.";

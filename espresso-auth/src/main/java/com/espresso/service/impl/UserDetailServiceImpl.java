@@ -36,7 +36,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("username or password error");
         }
         // TODO query permission from the database, now make a mock permission
-        List<String> permissionList = new ArrayList<>(Arrays.asList("thirdparty", "customer"));
+        List<String> permissionList = new ArrayList<>(Arrays.asList("ROLE_thirdparty", "ROLE_customer"));
         return new LoginUser(user, permissionList);
     }
 }

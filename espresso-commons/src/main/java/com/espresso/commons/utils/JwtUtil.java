@@ -1,5 +1,6 @@
 package com.espresso.commons.utils;
 
+import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -7,9 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * JWT Tools
@@ -19,7 +18,7 @@ public class JwtUtil {
     // Valid for
     public static final Long JWT_TTL = 30 * 60 * 1000L;
     // Set key plaintext
-    public static final String JWT_KEY = "itlils";
+    public static final String JWT_KEY = "espresso";
 
     public static String getUUID(){
         String token = UUID.randomUUID().toString().replaceAll("-", "");
@@ -31,8 +30,8 @@ public class JwtUtil {
      * @param subject The data to be stored in the token (json format)
      * @return
      */
-    public static String createJWT(String subject) {
-        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());// 设置过期时间
+    public static String createJWT(String subject, Map<String, Object> claims) {
+        JwtBuilder builder = getJwtBuilder(subject, null, getUUID(), claims);// 设置过期时间
         return builder.compact();
     }
 
@@ -42,12 +41,12 @@ public class JwtUtil {
      * @param ttlMillis token timeout
      * @return
      */
-    public static String createJWT(String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());// 设置过期时间
+    public static String createJWT(String subject, Long ttlMillis, Map<String, Object> claims) {
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID(), claims);// 设置过期时间
         return builder.compact();
     }
 
-    private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid) {
+    private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid, Map<String, Object> claims ) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         SecretKey secretKey = generalKey();
         long nowMillis = System.currentTimeMillis();
@@ -60,10 +59,11 @@ public class JwtUtil {
         return Jwts.builder()
                 .setId(uuid)
                 .setSubject(subject)   // Subject can be JSON data
-                .setIssuer("ydlclass")
+                .setIssuer("espresso")
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey) // Sign using HS256 symmetric encryption algorithm, the second parameter is the secret key
-                .setExpiration(expDate);
+                .setExpiration(expDate)
+                .addClaims(claims);
     }
 
     /**
@@ -73,8 +73,8 @@ public class JwtUtil {
      * @param ttlMillis
      * @return
      */
-    public static String createJWT(String id, String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id); // Set expiration time
+    public static String createJWT(String id, String subject, Long ttlMillis, Map<String, Object> claims) {
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id, claims); // Set expiration time
         return builder.compact();
     }
 
