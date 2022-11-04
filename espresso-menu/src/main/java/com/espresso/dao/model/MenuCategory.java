@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Menu Category Entity
@@ -33,4 +34,7 @@ public class MenuCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_outline_id")
     private MenuOutline menuOutline;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE)
+    private List<MenuItem> menuItemList;
 }

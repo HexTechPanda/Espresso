@@ -1,5 +1,7 @@
 package com.espresso.service;
 
+import com.espresso.commons.result.Result;
+import com.espresso.domain.vo.CreateOutlineRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,7 +9,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Mingze Ma
  */
-@Service
 public interface MenuService {
 
+    Result createOutline(CreateOutlineRequest request);
 }
