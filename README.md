@@ -50,7 +50,7 @@ but you also can call the target service directly with endpoint like
 localhost:8011
 ## Auth service
 Login API
-   - POST 54.90.184.220:8080/auth/public/user/login
+   - POST http://espresso-auth.hexpanda.click/auth/public/user/login
    - Request body:
 ```json
 {
@@ -69,7 +69,7 @@ Login API
 }
 ```
 Register API
-- POST 54.90.184.220:8080/auth/public/user/register
+- POST http://espresso-auth.hexpanda.click/auth/public/user/register
 - Request body:
 ```json
 {
@@ -90,7 +90,7 @@ Register API
 }
 ```
 Logout API
-- POST 54.90.184.220:8080/auth/user/logout (carry bearer token in http header)
+- POST http://espresso-auth.hexpanda.click/auth/user/logout (carry bearer token in http header)
 - Request body:
 ```
 {
