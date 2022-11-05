@@ -112,7 +112,7 @@ http://localhost:8080/auth/public/oauth2/authorize/google?redirect_uri=http://lo
 2. The url reaches backend and redirect to Google login (this step will set two cookies)
 3. Page handles the redirect response, please refer to this .js
    https://github.com/The-Tech-Tutor/spring-react-login/blob/master/client/src/user/oauth2/OAuth2RedirectHandler.js
-4. Configure need to change:
+4. Configure need to change: 
 ```
 index.js:
 export const GOOGLE_AUTH_URL = API_BASE_URL + "/auth/public/oauth2/authorize/google?redirect_uri=" + OAUTH2_REDIRECT_URI;
