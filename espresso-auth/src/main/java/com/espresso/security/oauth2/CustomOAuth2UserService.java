@@ -1,8 +1,11 @@
 package com.espresso.security.oauth2;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.espresso.domain.LoginUser;
 import com.espresso.domain.OAuth2RegisterRequest;
 import com.espresso.dto.SysUser;
+import com.espresso.dto.UserRole;
+import com.espresso.mapper.SysUserRoleMapper;
 import com.espresso.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserService userService;
+
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -63,10 +71,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // TODO: mock permission
-        List<String> permissionList = new ArrayList<>(Arrays.asList("thirdparty", "customer"));
+        LambdaQueryWrapper<UserRole> userRoleWrapper = new LambdaQueryWrapper<>();
+        userRoleWrapper.eq(UserRole::getUserId, sysUser.getId());
+
+        List<UserRole> userRoleList = sysUserRoleMapper.selectList(userRoleWrapper);
+        List<String> permissionList = userRoleList.stream().map(UserRole::getRole).collect(Collectors.toList());
         LoginUser loginUser = new LoginUser(sysUser, permissionList);
         loginUser.setAttributes(oAuth2User.getAttributes());
-
         return loginUser;
     }
 

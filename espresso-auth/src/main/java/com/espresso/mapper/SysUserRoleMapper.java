@@ -1,9 +1,9 @@
 package com.espresso.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.espresso.dto.SysUser;
+import com.espresso.dto.UserRole;
 import org.apache.ibatis.annotations.Select;
 
 
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface SysUserRoleMapper extends BaseMapper<UserRole> {
 }

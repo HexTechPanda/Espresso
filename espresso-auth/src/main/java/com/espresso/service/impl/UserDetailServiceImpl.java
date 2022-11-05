@@ -3,7 +3,9 @@ package com.espresso.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.espresso.domain.LoginUser;
 import com.espresso.dto.SysUser;
+import com.espresso.dto.UserRole;
 import com.espresso.mapper.SysUserMapper;
+import com.espresso.mapper.SysUserRoleMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +15,16 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Resource
     SysUserMapper sysUserMapper;
+
+    @Resource
+    SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,7 +42,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("username or password error");
         }
         // TODO query permission from the database, now make a mock permission
-        List<String> permissionList = new ArrayList<>(Arrays.asList("ROLE_thirdparty", "ROLE_customer"));
+        LambdaQueryWrapper<UserRole> userRoleWrapper = new LambdaQueryWrapper<>();
+        userRoleWrapper.eq(UserRole::getUserId, user.getId());
+
+        List<UserRole> userRoleList = sysUserRoleMapper.selectList(userRoleWrapper);
+        List<String> permissionList = userRoleList.stream().map(UserRole::getRole).collect(Collectors.toList());
         return new LoginUser(user, permissionList);
     }
 }

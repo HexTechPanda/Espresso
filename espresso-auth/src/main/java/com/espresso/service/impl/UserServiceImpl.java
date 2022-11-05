@@ -6,7 +6,9 @@ import com.espresso.commons.result.Result;
 import com.espresso.domain.OAuth2RegisterRequest;
 import com.espresso.domain.RegisterRequest;
 import com.espresso.dto.SysUser;
+import com.espresso.dto.UserRole;
 import com.espresso.mapper.SysUserMapper;
+import com.espresso.mapper.SysUserRoleMapper;
 import com.espresso.security.oauth2.OAuth2AuthenticationProcessingException;
 import com.espresso.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +17,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Service
@@ -22,6 +25,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public Result checkUsername(String username) {
@@ -74,6 +80,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } catch (DuplicateKeyException ex){
             return Result.error("Mobile or email has registered.");
         }
+        UserRole userRole = new UserRole();
+        userRole.setUserId(sysUser.getId());
+        userRole.setRole("ROLE_customer");
+        sysUserRoleMapper.insert(userRole);
 
         return Result.ok();
     }
@@ -109,7 +119,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impleme
         } catch (DuplicateKeyException ex){
             throw new OAuth2AuthenticationProcessingException("Mobile or email has registered.");
         }
-
+        UserRole userRole = new UserRole();
+        userRole.setUserId(sysUser.getId());
+        userRole.setRole("ROLE_customer");
+        sysUserRoleMapper.insert(userRole);
         return sysUser;
     }
 
