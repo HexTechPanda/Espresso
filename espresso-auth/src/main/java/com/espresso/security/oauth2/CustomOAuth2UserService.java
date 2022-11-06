@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             sysUser = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
         }
 
-        // TODO: mock permission
+        // query permission from the database
         LambdaQueryWrapper<UserRole> userRoleWrapper = new LambdaQueryWrapper<>();
         userRoleWrapper.eq(UserRole::getUserId, sysUser.getId());
 

@@ -55,6 +55,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
@@ -72,7 +73,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Map<String, Object> claims = new HashMap<>();
         claims.put("authorities", JSON.toJSON(loginUser.getPermissions()));
         String jwt = JwtUtil.createJWT(userId, claims);
-        Map<String, String> map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("token",jwt);
         // 5 Put all information related to system users into Redis
         UserProfile userProfile = new UserProfile();

@@ -41,7 +41,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if(Objects.isNull(user)){
             throw new BadCredentialsException("username or password error");
         }
-        // TODO query permission from the database, now make a mock permission
+        // query permission from the database
         LambdaQueryWrapper<UserRole> userRoleWrapper = new LambdaQueryWrapper<>();
         userRoleWrapper.eq(UserRole::getUserId, user.getId());
 
