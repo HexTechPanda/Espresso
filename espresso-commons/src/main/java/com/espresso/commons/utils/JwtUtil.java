@@ -17,7 +17,7 @@ public class JwtUtil {
     // Valid for
     public static final Long JWT_TTL = 30 * 60 * 1000L;
     // Set key plaintext
-    public static final String JWT_KEY = "espresso";
+    public static final String JWT_KEY = "926D96C90030DD58429D2751AC1BDBBC";
 
     public static String getUUID(){
         String token = UUID.randomUUID().toString().replaceAll("-", "");
@@ -41,13 +41,13 @@ public class JwtUtil {
      * @return
      */
     public static String createJWT(String subject, Long ttlMillis, Map<String, Object> claims) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID(), claims);// 设置过期时间
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID(), claims);
         return builder.compact();
     }
 
     private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid, Map<String, Object> claims ) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        SecretKey secretKey = generalKey();
+//        SecretKey secretKey = generalKey();
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         if(ttlMillis==null){
@@ -58,15 +58,15 @@ public class JwtUtil {
         return Jwts.builder()
                 .setId(uuid)
                 .setSubject(subject)   // Subject can be JSON data
-                .setIssuer(JwtUtil.JWT_KEY)
+                .setIssuer("espresso")
                 .setIssuedAt(now)
-                .signWith(signatureAlgorithm, secretKey) // Sign using HS256 symmetric encryption algorithm, the second parameter is the secret key
+                .signWith(signatureAlgorithm, JWT_KEY) // Sign using HS256 symmetric encryption algorithm, the second parameter is the secret key
                 .setExpiration(expDate)
                 .addClaims(claims);
     }
 
     /**
-     * 创建token
+     * create token
      * @param id
      * @param subject
      * @param ttlMillis
@@ -96,9 +96,9 @@ public class JwtUtil {
      * @throws Exception
      */
     public static Claims parseJWT(String jwt) throws Exception {
-        SecretKey secretKey = generalKey();
+//        SecretKey secretKey = generalKey();
         return Jwts.parser()
-                .setSigningKey(secretKey)
+                .setSigningKey(JWT_KEY)
                 .parseClaimsJws(jwt)
                 .getBody();
     }
