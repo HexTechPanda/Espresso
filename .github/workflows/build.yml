@@ -1,4 +1,5 @@
 name: CI/CD Pipeline
+
 on:
   workflow_dispatch:
 
@@ -6,11 +7,7 @@ env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
   ECS_CLUSTER: livecat-ecs-cluster-ec2-1                 # set this to your Amazon ECS cluster name
 
-permissions:
-  contents: read
-
 jobs:
-  #Test's job
   tests:
     name: Unit tests
     #Run on Ubuntu using the latest version
@@ -35,22 +32,22 @@ jobs:
       #Run Tests
       - name: Run Tests
         run: mvn -B test
-    #Sonar's Job
-    sonar:
-      #Depends on test's job
-      needs: tests
-      name: SonarCloud analysis
-      #Run on Ubuntu using the latest version
-      runs-on: ubuntu-latest
-      #Job's steps
-      steps:
-        #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-        - uses: actions/checkout@v1
-        #Set up JDK 11
-        - name: Set up JDK
-          uses: actions/setup-java@v1
-          with:
-            java-version: '11'
+  #Sonar's Job
+  sonar:
+    #Depends on test's job
+    needs: tests
+    name: SonarCloud analysis
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
   #Build's job
   build:
     needs: sonar
@@ -61,30 +58,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-#      - name: Configure AWS credentials
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: ${{ env.AWS_REGION }}
-#
-#      - name: Login to Amazon ECR
-#        id: login-ecr
-#        uses: aws-actions/amazon-ecr-login@v1
-#
-#      - name: Build, tag, and push image to Amazon ECR
-#        id: build-image
-#        env:
-#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-#          IMAGE_TAG: ${{ github.sha }}
-#        run: |
-#          # Build a docker container and push it to ECR
-#          mvn -B package -DskipTests
-#
-#          # push livecat-auth
-#          docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
-#          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
 
   #Deploy's job
   deploy:
