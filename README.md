@@ -50,7 +50,7 @@ but you also can call the target service directly with endpoint like
 localhost:8011
 ## Auth service
 Login API
-   - POST http://espresso-auth.hexpanda.click/auth/public/user/login
+   - POST https://espresso-auth.hexpanda.click/auth/public/user/login
    - Request body:
 ```json
 {
@@ -69,7 +69,7 @@ Login API
 }
 ```
 Register API
-- POST http://espresso-auth.hexpanda.click/auth/public/user/register
+- POST https://espresso-auth.hexpanda.click/auth/public/user/register
 - Request body:
 ```json
 {
@@ -90,7 +90,7 @@ Register API
 }
 ```
 Logout API
-- POST http://espresso-auth.hexpanda.click/auth/user/logout (carry bearer token in http header)
+- POST https://espresso-auth.hexpanda.click/auth/user/logout (carry bearer token in http header)
 - Request body:
 ```
 {
@@ -107,7 +107,7 @@ https://github.com/The-Tech-Tutor/spring-react-login/tree/master/client
 
 Steps:
 1. customer click the url in the page:
-http://espresso-auth.hexpanda.click/auth/public/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect
+https://espresso-auth.hexpanda.click/auth/public/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect
 
 2. The url reaches backend and redirect to Google login (this step will set two cookies)
 3. Page handles the redirect response, please refer to this .js

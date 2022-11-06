@@ -21,7 +21,7 @@ spring:
           google:
             client-id: 820446727245-j0863bgvsc1bke4vtkh78op8mci55vln.apps.googleusercontent.com
             client-secret: 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
-            redirectUri: "http://espresso-auth.hexpanda.click/auth/public/oauth2/callback/{registrationId}"
+            redirectUri: "https://espresso-auth.hexpanda.click/auth/public/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
