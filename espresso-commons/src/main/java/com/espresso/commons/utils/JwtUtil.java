@@ -59,7 +59,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setId(uuid)
                 .setSubject(subject)   // Subject can be JSON data
-                .setIssuer("espresso")
+                .setIssuer(JwtUtil.JWT_KEY)
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey) // Sign using HS256 symmetric encryption algorithm, the second parameter is the secret key
                 .setExpiration(expDate)

@@ -18,5 +18,5 @@ public class UserProfile implements Serializable {
     private String mobile;
     private String email;
 
-    List<String> permissions;
+    private List<String> permissions;
 }

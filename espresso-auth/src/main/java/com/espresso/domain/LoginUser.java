@@ -23,10 +23,10 @@ public class LoginUser implements OAuth2User, UserDetails {
     private static final long serialVersionUID = 4840482468139779302L;
 
     private SysUser sysUser;
-    List<String> permissions;
+    private List<String> permissions;
     private Map<String, Object> attributes;
     @JSONField(serialize = false)
-    List<SimpleGrantedAuthority> authorities;
+    private List<SimpleGrantedAuthority> authorities;
 
 
     public LoginUser(SysUser user, List<String> permissions) {
