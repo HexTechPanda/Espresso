@@ -107,7 +107,7 @@ https://github.com/The-Tech-Tutor/spring-react-login/tree/master/client
 
 Steps:
 1. customer click the url in the page:
-https://espresso-auth.hexpanda.click/auth/public/oauth2/authorize/google?redirect_uri=http://localhost:3000/oauth2/redirect
+https://espresso-auth.hexpanda.click/auth/public/oauth2/authorize/google?redirect_uri=https://espresso.malcolmpro.com/
 
 2. The url reaches backend and redirect to Google login (this step will set two cookies)
 3. Page handles the redirect response, please refer to this .js
